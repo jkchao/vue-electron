@@ -8,6 +8,7 @@
         </router-link>
       </div>
       <div class="user">
+        <a href="http://jkchao.cn">Back</a>
         <span class="user-face-box">
           <img :src="user.gravatar || 'https://static.jkchao.cn' + '?imageView2/1/w/36/h/36'" class="user-face">
         </span>
@@ -148,6 +149,7 @@ header {
   }
 
   >.user {
+    color: white;
 
     .el-button {
       i {

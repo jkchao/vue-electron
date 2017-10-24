@@ -25,8 +25,9 @@
           type="password"
           @keyup.enter.native="submit('form')"></el-input>
         </el-form-item>
-        <el-form-item>
+        <el-form-item class="btn">
           <el-button @click.native="submit('form')">Submit</el-button>
+          <el-button class="back" @click.native="back">Back</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -60,6 +61,10 @@ export default {
           return false
         }
       })
+    },
+
+    back () {
+      window.location.href = 'https://jkchao.cn'
     },
 
     buildBackground () {
@@ -221,10 +226,26 @@ export default {
         height: $xlg-pad;
       }
 
-      .el-button {
-        display: block;
-        height: $xlg-pad;
-        width: 100%;
+      .btn {
+
+        >div {
+          display: flex;
+          justify-content: space-between;
+          width: 100%;
+
+          >button {
+            width: 55%;
+            height: $xlg-pad;
+            border: 1px solid rgb(191, 201, 217);
+
+            &:hover {
+              border-color: $black;
+            }
+          }
+          .back {
+            width: 40%;
+          }
+        }
       }
     }
   }
