@@ -26,8 +26,14 @@
           @keyup.enter.native="submit('form')"></el-input>
         </el-form-item>
         <el-form-item class="btn">
-          <el-button @click.native="submit('form')">Submit</el-button>
-          <el-button class="back" @click.native="back">Back</el-button>
+          <el-button 
+            @click.native="submit('form')" 
+            :disabled="loginLoading">
+            {{ !loginLoading ? 'Submit' : 'loading...'}}
+          </el-button>
+          <el-button 
+            class="back" 
+            @click.native="back">Back</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -44,7 +50,8 @@ export default {
       form: {
         username: '',
         password: ''
-      }
+      },
+      loginLoading: false
     }
   },
 
@@ -53,10 +60,15 @@ export default {
     submit (formName) {
       this.$refs[formName].validate(async (valid) => {
         if (valid) {
+          this.loginLoading = true
           const data = await this.$store.dispatch('login', { ...this.form })
-          if (data.code !== 1) return
+          if (data.code !== 1) {
+            this.loginLoading = false
+            return
+          }
           if (!this.$route.query.redirect) this.$router.push('/home')
           else this.$router.push(this.$route.query.redirect)
+          this.loginLoading = false
         } else {
           return false
         }

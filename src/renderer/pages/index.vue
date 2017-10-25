@@ -8,10 +8,23 @@
         </router-link>
       </div>
       <div class="user">
-        <a href="http://jkchao.cn">Back</a>
-        <span class="user-face-box">
-          <img :src="user.gravatar || 'https://static.jkchao.cn' + '?imageView2/1/w/36/h/36'" class="user-face">
-        </span>
+        <!-- <span class="user-face-box">
+          <img :src="(user.gravatar || 'https://static.jkchao.cn') + '?imageView2/1/w/36/h/36'" class="user-face">
+        </span> -->
+    <el-dropdown trigger="hover" @command="handleCommand">
+      <span class="el-dropdown-link user-face-box">
+        <img :src="(user.gravatar || 'https://static.jkchao.cn') + '?imageView2/1/w/36/h/36'" class="user-face">
+        <i class="el-icon-caret-bottom el-icon--right"></i>
+      </span>
+      <el-dropdown-menu slot="dropdown">
+        <el-dropdown-item command="back">
+          <a href="https://jkchao.cn">返回首页</a>
+        </el-dropdown-item>
+        <el-dropdown-item command="logout">
+          <a href="javascript:;">退出</a>
+        </el-dropdown-item>
+      </el-dropdown-menu>
+    </el-dropdown>
       </div>
     </header>
     <section>
@@ -99,6 +112,13 @@ export default {
     ])
   },
 
+  methods: {
+    handleCommand (command) {
+      if (command === 'logout') this.$router.push('/login')
+      else window.location.href = 'https://jkchao.cn'
+    }
+  },
+
   watch: {
     '$route' (to, from) { // 监听路由改变
       this.defaultPath = to.path
@@ -150,6 +170,14 @@ header {
 
   >.user {
     color: white;
+
+    .el-dropdown {
+      color: white;
+
+      .el-icon-caret-bottom {
+        margin-left: 12px;
+      }
+    }
 
     .el-button {
       i {
