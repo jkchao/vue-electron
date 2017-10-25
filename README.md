@@ -2,7 +2,22 @@
 
 > An electron-vue project
 
-vue-admin client，base on vue-electron，axios, vuex, vue-router.
+[vue-admin](https://admin.jkchao.cn) client，base on vue-electron，axios, vuex, vue-router.
+
+## 下载
+
+[MacOS](https://github.com/jkchao/vue-electron/releases/download/0.0.2-bate/vue-electron-mac-x64.zip)
+[Windows](https://github.com/jkchao/vue-electron/releases/download/0.0.2-bate/vue-electron-win32-x64.zip)
+[Linux](https://github.com/jkchao/vue-electron/releases/download/0.0.2-bate/vue-electron-linux-x64.zip)
+
+
+### 相关截图
+
+![](http://ovshyp9zv.bkt.clouddn.com/vue-electron-1.png)
+![](http://ovshyp9zv.bkt.clouddn.com/vue-electron-2.png)
+![](http://ovshyp9zv.bkt.clouddn.com/vue-electron-3.png)
+![](http://ovshyp9zv.bkt.clouddn.com/vue-electron-4.png)
+
 
 #### Build Setup
 
