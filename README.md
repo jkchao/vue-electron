@@ -6,9 +6,9 @@
 
 ## 下载
 
-[MacOS](https://github.com/jkchao/vue-electron/releases/download/0.0.3-bate/vue-electron-mac-x64.zip)
-[Windows](https://github.com/jkchao/vue-electron/releases/download/0.0.3-bate/vue-electron-win32-x64.zip)
-[Linux](https://github.com/jkchao/vue-electron/releases/download/0.0.3-bate/vue-electron-linux-x64.zip)
+[MacOS](https://github.com/jkchao/vue-electron/releases/download/0.0.3-bate/electron-mac-x64.zip)
+[Windows](https://github.com/jkchao/vue-electron/releases/download/0.0.3-bate/electron-win32-x64.zip)
+[Linux](https://github.com/jkchao/vue-electron/releases/download/0.0.3-bate/electron-linux-x64.zip)
 
 
 ### 相关截图
