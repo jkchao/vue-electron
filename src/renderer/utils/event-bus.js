@@ -77,7 +77,6 @@ export default new Vue({
     },
 
     GET_SONG_SUCCESS (action) {
-      console.log(action)
       this.player.song.data = action.result
       this.player.song.fetching = false
     }

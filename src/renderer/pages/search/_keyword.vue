@@ -58,7 +58,12 @@ export default {
   },
 
   created () {
-    this.$store.dispatch('article/getArtList', { tag: this.$route.params.keyword })
+    this.$store.dispatch('article/getArtList', { keyword: this.$route.params.keyword })
+  },
+
+  beforeRouteUpdate (to, from, next) {
+    this.$store.dispatch('article/getArtList', { keyword: to.params.keyword })
+    next()
   }
 }
 </script>

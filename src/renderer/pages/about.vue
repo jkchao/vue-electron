@@ -41,7 +41,7 @@
               v-show="showBox"
               @mouseover="showBox = true"
               @mouseleave="showBox = false">
-              <img src="/static/images/code.jpeg" alt="code" width="150px">
+              <img src="../assets/images/code.jpeg" alt="code" width="150px">
               <span class="arrow"></span>
             </div>
           </transition>
@@ -95,7 +95,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import '../assets/scss/index.scss';
+@import '../assets/scss/mixin.scss';
 .about {
   margin: 0 auto;
   width: $container-min-width;

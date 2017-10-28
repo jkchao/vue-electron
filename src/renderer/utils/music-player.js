@@ -1,4 +1,4 @@
-import howler from 'howler'
+import Howler from 'howler'
 import service from '@/api'
 
 export default state => {
@@ -111,6 +111,7 @@ export default state => {
 
         // 实例播放轨方法
         const buildHowl = song => {
+          console.log(song)
           song.howl =
             song.howl ||
             new Howl({
@@ -177,6 +178,7 @@ export default state => {
           const res = await service.getMusicUrl(song)
             .catch(err => console.error(err))
           if (res && res.code === 1) {
+            console.log(res)
             song.src = res.result.data[0].url
             if (song.id === playerList[state.playerState.targetIndex].id) {
               buildHowl(song)

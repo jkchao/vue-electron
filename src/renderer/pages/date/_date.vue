@@ -59,7 +59,12 @@ export default {
   },
 
   created () {
-    this.$store.dispatch('article/getArtList', { tag: this.$route.params.date })
+    this.$store.dispatch('article/getArtList', { date: this.$route.params.date })
+  },
+
+  beforeRouteUpdate (to, from, next) {
+    this.$store.dispatch('article/getArtList', { date: to.params.date })
+    next()
   }
 }
 </script>

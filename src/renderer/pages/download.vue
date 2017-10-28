@@ -1,7 +1,7 @@
 <template>
   <div class="download">
     <div class="title">
-      Download <a href="https://jkchao.cn" target="_blank">my_blog</a> client.
+      Download <a href="https://jkchao.cn" target="_blank">blog</a> client.
     </div>
     <div class="download-img">
       <img src="https://static.jkchao.cn/vue-electron-1.png" alt="" width="800px">
@@ -31,7 +31,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import '../assets/scss/index.scss';
+@import '../assets/scss/mixin.scss';
 .download {
   width: 800px;
   margin: 1rem auto;
@@ -108,15 +108,15 @@ export default {
 
       &.mac>.logo {
 
-        background: url('/static/images/apple-logo.svg') no-repeat center;
+        background: url('../assets/images/apple-logo.svg') no-repeat center;
       }
 
       &.linux>.logo {
-        background: url('/static/images/linux-logo.png') no-repeat center;
+        background: url('../assets/images/linux-logo.png') no-repeat center;
       }
 
       &.windows>.logo {
-        background: url('/static/images/windows-logo.png') no-repeat center;
+        background: url('../assets/images/windows-logo.png') no-repeat center;
       }
     }
   }

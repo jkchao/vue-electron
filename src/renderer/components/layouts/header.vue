@@ -4,7 +4,7 @@
         <div class="header-left">
           <div class="logo">
             <router-link to="/">
-              <img src="static/images/logo.png" alt="" width="36">
+              <img src="../../assets/images/logo.png" alt="" width="36">
               三毛
             </router-link>
           </div> 
@@ -121,22 +121,20 @@ export default {
     }
   },
 
-  mounted () {
-    if (process.browser) {
-      const player = EventBus.player
-      const play = () => {
-        if (player.playerState.ready && player.player && player.player.play) {
-          player.player.play()
-        } else {
-          setTimeout(play, 1666)
-        }
+  created () {
+    const player = EventBus.player
+    const play = () => {
+      if (player.playerState.ready && player.player && player.player.play) {
+        player.player.play()
+      } else {
+        setTimeout(play, 1666)
       }
-      window.addEventListener('load', event => {
-        window.setTimeout(() => {
-          play()
-        }, 1666)
-      })
     }
+    window.addEventListener('load', event => {
+      window.setTimeout(() => {
+        play()
+      }, 1666)
+    })
   }
 }
 </script>

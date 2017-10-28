@@ -7,13 +7,17 @@ import store from './store'
 import * as filters from './filters'
 
 import '@/assets/css/iconfont.css'
-import '@/assets/css/np.css'
 import 'highlight.js/styles/atom-one-dark.css'
 
 import clickOutside from './utils/clickOutside.js'
 
-// import 'swiper/dist/css/swiper.css'
+import 'swiper/dist/css/swiper.css'
 import VueAwesomeSwiper from 'vue-awesome-swiper/ssr'
+
+// import fs from 'fs'
+// import path from 'path'
+
+// fs.readFileSync(path.join(__static, '/font/Futura.ttc'))
 
 Vue.use(VueAwesomeSwiper)
 

@@ -1,7 +1,7 @@
 <template>
   <section  class="think" >
     <div class="head">
-      <img src="/static/images/head.png">
+      <img src="../assets/images/head.png">
     </div>
     <div class="article">
       <articleView

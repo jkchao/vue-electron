@@ -60,6 +60,11 @@ export default {
 
   created () {
     this.$store.dispatch('article/getArtList', { tag: this.$route.params.tag })
+  },
+
+  beforeRouteUpdate (to, from, next) {
+    this.$store.dispatch('article/getArtList', { tag: to.params.tag })
+    next()
   }
 }
 </script>

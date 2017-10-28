@@ -127,7 +127,7 @@
         <div class="user">
           <div class="gravatar" v-if="!mobileLayout">
             <img :alt="user.name || '匿名用户'"
-                 :src="user.gravatar || '/static/images/user.png'">
+                 :src="user.gravatar || '../../assets/images/user.png'">
           </div>
         </div>
         <div class="editor">

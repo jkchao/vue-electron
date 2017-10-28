@@ -2,8 +2,6 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import store from '../store'
 
-import NProgress from 'nprogress' // 页面顶部进度条
-
 const home = () => import(/* webpackChunkName: "home" */ '../pages/index')
 
 const code = () => import(/* webpackChunkName: "code" */ '../pages/code')
@@ -94,7 +92,6 @@ const router = new Router({
 const isSide = ['index', 'code', 'think', 'date', 'tag', 'search', 'sitemap']
 
 router.beforeEach((to, from, next) => {
-  NProgress.start()
   const isAsidePage = isSide.includes(to.name)
   if (!Object.is(store.state.options.isAsidePage, isAsidePage)) {
     store.commit('options/CHANGE_ASIDE_PAGE', isAsidePage)
@@ -102,8 +99,6 @@ router.beforeEach((to, from, next) => {
   next()
 })
 
-router.afterEach(transition => {
-  NProgress.done()
-})
+router.afterEach(transition => {})
 
 export default router

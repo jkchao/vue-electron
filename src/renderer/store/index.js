@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import EventBus from '../utils/event-bus'
-import service from '../api'
+import EventBus from '@/utils/event-bus'
+import service from '@/api'
 
 import modules from './modules'
 
@@ -26,6 +26,7 @@ const actions = {
     const music = await service.getMusicLst()
       .catch(err => console.error(err))
     if (music && music.code === 1) {
+      // console.log(EventBus.GET_LIST_SUCCESS(music))
       EventBus.GET_LIST_SUCCESS(music)
       EventBus.INIT_PLAYER()
     } else EventBus.GET_LIST_FAILURE()
