@@ -3,12 +3,16 @@ body {
   margin: 0;
   color: $text;
   letter-spacing: 0.5px;
-  font-family: 'Futura', "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  // font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  font-family: -apple-system,SF UI Text,Arial,PingFang SC,Hiragino Sans GB,Microsoft YaHei,WenQuanYi Micro Hei,sans-serif;
   font-size: $font-size-base;
-  background: #f2f2f2;  
   font-weight: 400;
   line-height: 1.4;
   -webkit-font-smoothing: antialiased;
+}
+
+body {
+  padding: 5rem 0 0 0;
 }
 
 
@@ -28,54 +32,13 @@ body {
                       border-color .25s linear);
 }
 
-// 内容区域
-
 .container {
   width: $container-width;
   margin: 0 auto;
 }
 
-// 面包屑
-.el-breadcrumb__separator {
-  margin: 6px !important;
-  &:after {
-    content: '/'
-  }
-}
-
-// 字体
 .font-futura {
   font-family: Futura;
-}
-
-.iconfont.mar {
-  margin-right: 4px;
-}
-
-// 内容表格
-.table {
-  padding: $normal-pad;
-  background: $white;
-
-  .head {
-    background: #f2f2f2;
-  }
-
-  .el-table--enable-row-hover .el-table__body tr:hover>td {
-    background: #f2f2f2;
-  }
-
-  >.pagination {
-    margin-top: 1rem;
-    text-align: right;
-  }
-}
-
-.el-form-item__label{
-  &::before {
-    content: '';
-    display: none;
-  }
 }
 
 
@@ -90,66 +53,74 @@ body {
   }
 }
 
-// el-check-group
-
-.el-checkbox-group {
-  display: flex;
-  flex-wrap: wrap;
-
-  >.el-checkbox-button {
-    margin: 4px;
-
-    >.el-checkbox-button__inner  {
-      border: 1px solid rgb(191, 201, 217);
-      border-radius: 4px;
-    }
-  }
-}
-
-// picture
-
-.avatar-uploader {
+#share {
   
-  .el-upload {
-    border: 1px dashed #d9d9d9;
-    border-radius: 6px;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .el-upload:hover {
-    border-color: $black;
-  }
-
-}
-
-.avatar-uploader-icon {
-  font-size: 28px;
-  color: #8c939d;
-  width: 178px;
-  height: 178px;
-  line-height: 178px;
-  text-align: center;
-}
-.avatar {
-  width: 178px;
-  // height: 178px;
-  display: block;
-}
-
-// el-dialog
-
-.el-dialog--tiny {
-  width: 420px;
-
-  .el-dialog__body {
-    padding: 10px 20px 0; 
-
-    .descript {
-      margin-bottom: 10px;
+    &.article-share {
+  
+      > .share-box {
+        opacity: .6;
+  
+        &:hover {
+          opacity: 1;
+        }
+  
+        > .share-link {
+          width: calc((100% - (.445em * 11)) / 12);
+          height: 2.2em;
+          line-height: 2.3em;
+          background-color: #eee;
+          margin-right: .13rem;
+  
+          > .iconfont {
+            font-size: 1.3em;
+          }
+  
+          &:last-child {
+            margin-right: 0;
+          }
+        }
+      }
+    }
+  
+    &.sidebar-share {
+      position: fixed;
+      top: 25%;
+      left: 0;
+      width: 4em;
+  
+      > .share-box {
+        opacity: .4;
+  
+        &:hover {
+          opacity: 1;
+        }
+  
+        > .share-link {
+          width: 3em;
+          height: 2.5em;
+          line-height: 2.6em;
+  
+          > .iconfont {
+            font-size: 1.3em;
+          }
+  
+          &.renren,
+          &.evernote,
+          &.google-plus,
+          &.linkedin,
+          &.mail {
+            display: none;
+          }
+  
+          &:last-child {
+            margin-bottom: 0;
+          }
+        }
+      }
     }
   }
+a {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
 ::-webkit-input-placeholder {

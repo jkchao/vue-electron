@@ -1,0 +1,381 @@
+<template>
+  <div class="walls">
+    <div class="head font-futura">
+      <div class="box">
+        <p>WANT TO SAY SOMETHING?</p>
+        <a href="javascript:;" class="join"  @click.stop="open">COME ON!</a>
+      </div>
+    </div>
+
+    <transition-group name="slide-down" tag="div" class="list-box">
+      <div class="list" v-for="(list, index) in items" :key="list._id">
+        <h3 class="user">
+          <img :alt="list.name || '匿名用户'"
+                :src="gravatar(list.email) || 'http://ovshyp9zv.bkt.clouddn.com/gravatar.jpg'"
+                class="user-head">
+          <span class="user-name">
+            {{ list.name }}
+          </span>
+        </h3>
+        <p class="content">{{ list.content }}</p>
+        <div class="info">
+          <span class="time"><i class="iconfont icon-time"></i>{{ list.create_time | dateFormat('yyyy.MM.dd hh:mm')}}</span>
+          <span class="icon">
+            <a :href="list.github" target="_blank" v-show="list.github !== ''"><i class="iconfont icon-github"></i></a>
+            <a :href="list.blog"  target="_blank" v-show="list.blog !== ''"><i class="iconfont icon-boke"></i></a>
+          </span>
+        </div>
+      </div>
+    </transition-group>
+
+    <div class="loading-more " key="-2" v-if="!haveMore">
+      <a href="javascript:;" @click="loadMore" v-if="!fetch" class="allow">加载更多</a>
+      <a href="javascript:;" v-if="fetch" class="not-allow">加载中</a>
+    </div>
+
+    <dialog-com :visible.sync = "show">
+      <form>
+        <div class="dialog-item name" >
+          <span>大名：</span>
+          <input type="text" placeholder="name *" v-model="form.name" maxlength="20" class="form-item" />
+        </div>
+        <div class="dialog-item email">
+          <span>EMAIL：</span>
+          <input
+              type="email"
+              name="email"
+              placeholder="email *" 
+              v-model="form.email"
+              maxlength="30"
+              class="form-item">
+        </div>
+        <div class="dialog-item github" >
+          <span>GITHUB：</span>
+          <input type="text" v-model="form.github" maxlength="40" placeholder="http:// or https://" class="form-item" />
+        </div>
+        <div class="dialog-item blog" >
+          <span>BLOG：</span>
+          <input type="text" v-model="form.blog" maxlength="40" placeholder="http:// or https://" class="form-item" />
+        </div>
+        <div class="dialog-item content">
+          <span>说点啥？</span>
+          <textarea v-model="form.content" maxlength="160" resize="none" rows="4" placeholder="曾经有一个 BUG 摆在我的面前......" class="form-item" />
+        </div>
+      </form>
+      <div class="footer" slot="foot">
+        <button @click="show = false">取消</button>
+        <button 
+        @click="submit" 
+        :disabled="posting">{{ posting ? '提交中...' : '确定'}}</button>
+      </div>
+    </dialog-com>
+  </div>
+</template>
+
+<script>
+import dialogCom from '@/components/common/dialog.vue'
+import gravatar from 'gravatar'
+export default {
+  name: 'wall',
+
+  components: { dialogCom },
+
+  data () {
+    return {
+      show: false,
+      form: {
+        name: '',
+        github: '',
+        blog: '',
+        content: '',
+        email: ''
+      },
+
+      regexs: {
+        email: /\w[-\w.+]*@([A-Za-z0-9][-A-Za-z0-9]+\.)+[A-Za-z]{2,14}/,
+        url: /^((https|http):\/\/)+[A-Za-z0-9]+\.[A-Za-z0-9]+[\/=\?%\-&_~`@[\]\':+!]*([^<>\"\"])*$/
+      }
+    }
+  },
+
+  computed: {
+
+    fetch () {
+      return this.$store.state.wall.fetch
+    },
+
+    items () {
+      return this.$store.state.wall.data.list
+    },
+
+    posting () {
+      return this.$store.state.wall.posting
+    },
+
+    haveMore () {
+      return this.$store.state.wall.data.pagination.current_page ===
+      this.$store.state.wall.data.pagination.total_page
+    }
+  },
+
+  methods: {
+    open () {
+      this.form = Object.assign({}, {
+        name: '',
+        github: '',
+        blog: '',
+        content: ''
+      })
+      this.show = true
+    },
+
+    // 头像服务
+    gravatar(email) {
+      if (!this.regexs.email.test(email)) return null
+      let gravatar_url = gravatar.url(email, {
+        // size: '96', 
+        // rating: 'pg',
+        // default: 'https://gravatar.surmon.me/anonymous.jpg', 
+        protocol: 'https'
+      });
+      return gravatar_url
+    },
+
+    loadMore () {
+      this.$store.dispatch('wall/getHero', {
+        current_page: this.$store.state.wall.data.pagination.current_page + 1
+      })
+    },
+
+    async submit () {
+      if (this.form.name === '') return alert('姓名必填')
+      if (this.form.content === '') return alert('说点什么？')
+      if (!this.form.email) return alert('邮箱？')
+      if (!this.regexs.email.test(this.form.email)) return alert('邮箱不合法')
+      if (!!this.form.github && !this.regexs.url.test(this.form.github)) return alert('github不合法')
+      if (!!this.form.blog && !this.regexs.url.test(this.form.blog)) return alert('blog不合法')
+      const res = await this.$store.dispatch('wall/postHero', { ...this.form })
+      window.alert(res.message)
+      if (res.code === 1) {
+        this.show = false
+      }
+    }
+  },
+
+  created () {
+    this.$store.dispatch('wall/getHero')
+  }
+}
+</script>
+
+<style scoped lang="scss">
+
+@import '../assets/scss/index.scss';
+
+.walls {
+
+  >.head {
+    // display: grid;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    // grid-column: 1 / 4;
+    width: 100%;
+    height: 20rem;
+    font-size: 1.3rem;
+    color: $black;
+    text-align: center;
+    background: $module-bg;
+
+    p {
+      margin-bottom: .7rem;
+    }
+
+    .join {
+      position: relative;
+      padding: .5rem 1rem;
+      color: $black;
+      text-decoration: underline;
+      @include border-radius($xs-pad);
+      @include transition(all .5s ease);
+      @include transform(perspective(1px) translateZ(0));
+
+      &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: -1;
+        @include border-radius($xs-pad);
+        @include transform(scaleY(0));
+        @include transform-origin(50% 0px 0px);
+        transition-property: transform;
+        transition-duration: 0.5s;
+        transition-timing-function: ease-out;
+        background: $black;
+      }
+
+      &:hover {
+        color: white;
+        // background: $black;
+      }
+
+      &:hover::after {
+        transform: scaleY(1);
+        transition-timing-function: cubic-bezier(0.52, 1.64, 0.37, 0.66);
+      }
+    }
+  }
+
+  .list-box {
+    // display: grid;
+    // grid-template-columns: repeat(3, 1fr);
+    // grid-gap: 1rem;
+    display: flex;
+    // justify-content: space-between;
+    flex-wrap: wrap;
+    // margin: 1rem 0 0 0;
+
+    >.list {
+      position: relative;
+      left: 0;
+      top: 0;
+      padding: $normal-pad;
+      height: 14rem;
+      width: calc(100%/3 - 2rem/3);
+      background: $module-bg;
+      margin: 1rem 1rem 0 0;
+      @include css3-prefix('transition', 'all .3s');
+
+      &:nth-child(3n) {
+        margin-right: 0;
+      }
+
+      &:hover {
+        left: -4px;
+        top: -4px;
+        box-shadow: 4px 4px 10px 0 rgba(0,0,0,.2);
+        color: $black;
+        background: $white;
+      }
+
+      >.user {
+
+        >.user-head {
+          width: 2.5rem;
+          height: 2.5rem;
+          border-radius: 50%;
+        }
+
+        >.user-name {
+          margin-left: 1rem;
+          max-width: 20rem;
+          font-weight: normal;
+          font-size: .85rem;
+
+          @include text-overflow();
+        }
+      }
+
+      >.content {
+        margin: 1rem 0;
+        height: 55%;
+      }
+
+      >.info {
+        display: flex;
+        justify-content: space-between;
+        height: 1rem;
+        font-size: $font-size-small;
+        color: $dividers;
+        line-height: 1rem;
+
+        >.time>i {
+          margin-right: .3rem;
+          vertical-align: text-top;
+        }
+
+        a {
+          margin: .3rem;
+          color: #555;
+
+          >i {
+            @include transition(all .5s ease);
+          }
+
+          &:hover {
+            color: $black;
+
+            i {
+              font-size: 1.35rem;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  >.loading-more {
+    margin-top: 1rem;
+    padding: $md-pad;
+    background: $module-bg;
+    text-align: center;
+    color: $black;
+
+    &:hover {
+      background: lighten($module-hover-bg, 60%);
+    }
+
+    >.allow {
+      cursor: pointer;
+    }
+
+    >.not-allow {
+      cursor: not-allowed;
+    }
+  }
+}
+
+.dialog {
+  .dialog-item {
+    // display: grid;
+    // grid-template-columns: 80px auto;
+    display: flex;
+    margin: .8rem 1.5rem 1rem 0;
+
+    >span {
+      display: inline-block;
+      height: 30px;
+      width: 80px;
+      line-height: 30px;
+      text-align: right;
+    }
+
+    >.form-item {
+      width: calc(100% - 80px);
+      padding: .3rem .5rem;
+      border: 1px solid $border-color;
+      color: $black;
+      @include border-radius(4px);
+
+      &:hover {
+        border-color: $form-hover;
+      }
+
+      &:focus {
+        border-color: $black;
+      }
+    }
+  }
+  .footer {
+    text-align: right;
+
+    >button {
+      margin-right: 1.5rem;
+    }
+  }
+}
+
+</style>

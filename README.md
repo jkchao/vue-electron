@@ -1,23 +1,6 @@
-# vue-electron
+# electron
 
 > An electron-vue project
-
-[vue-admin](https://admin.jkchao.cn) client，base on vue-electron，axios, vuex, vue-router.
-
-## 下载
-
-[MacOS](https://github.com/jkchao/vue-electron/releases/download/0.0.2-bate/vue-electron-mac-x64.zip)
-[Windows](https://github.com/jkchao/vue-electron/releases/download/0.0.2-bate/vue-electron-win32-x64.zip)
-[Linux](https://github.com/jkchao/vue-electron/releases/download/0.0.2-bate/vue-electron-linux-x64.zip)
-
-
-### 相关截图
-
-![](http://ovshyp9zv.bkt.clouddn.com/vue-electron-1.png)
-![](http://ovshyp9zv.bkt.clouddn.com/vue-electron-2.png)
-![](http://ovshyp9zv.bkt.clouddn.com/vue-electron-3.png)
-![](http://ovshyp9zv.bkt.clouddn.com/vue-electron-4.png)
-
 
 #### Build Setup
 
@@ -41,3 +24,5 @@ npm run lint
 ```
 
 ---
+
+This project was generated with [electron-vue](https://github.com/SimulatedGREG/electron-vue)@[de85f81](https://github.com/SimulatedGREG/electron-vue/tree/de85f81890c01500113738bfe57bef136f9fbf52) using [vue-cli](https://github.com/vuejs/vue-cli). Documentation about the original structure can be found [here](https://simulatedgreg.gitbooks.io/electron-vue/content/index.html).

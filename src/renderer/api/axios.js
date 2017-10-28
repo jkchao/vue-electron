@@ -1,8 +1,6 @@
 import axios from 'axios'
 import * as config from '../config.js'
 import querystring from 'querystring'
-import { loginIn } from '../utils/loginIn'
-import app from '../main.js'
 
 const ax = axios.create({
   baseURL: config.API_ROOT
@@ -18,9 +16,6 @@ ax.interceptors.request.use(config => {
   ) {
     config.data = querystring.stringify(config.data)
   }
-  if (window.localStorage.getItem('TOKEN')) {
-    config.headers.Authorization = `Bearer ${JSON.parse(window.localStorage.getItem('TOKEN')).token}`
-  }
   return config
 }, error => {
   return Promise.reject(error)
@@ -29,15 +24,6 @@ ax.interceptors.request.use(config => {
 ax.interceptors.response.use(response => {
   return response
 }, error => {
-  if (!loginIn()) {
-    app.$alert('用户信息已过期，请点击确定后重新登录。', '提示', {
-      confirmButtonText: '确定',
-      callback: action => app.$router.push({
-        path: '/login',
-        query: { redirect: app.$route.fullPath }
-      })
-    })
-  }
   return Promise.reject(error)
 })
 

@@ -1,33 +1,35 @@
 import Vue from 'vue'
-import axios from 'axios'
 
-import element from 'element-ui'
-
-import App from './App'
+import App from './layout/App'
 import router from './router'
 import store from './store'
 
-import '@/assets/theme/index.css'
-import '@/assets/css/iconfont.css'
-
-// import 'static/theme/index.css'
-
 import * as filters from './filters'
 
-Object.keys(filters).forEach(k => Vue.filter(k, filters[k]))
+import '@/assets/css/iconfont.css'
+import '@/assets/css/np.css'
+import 'highlight.js/styles/atom-one-dark.css'
+
+import clickOutside from './utils/clickOutside.js'
+
+// import 'swiper/dist/css/swiper.css'
+import VueAwesomeSwiper from 'vue-awesome-swiper/ssr'
+
+Vue.use(VueAwesomeSwiper)
+
+Vue.directive('click-outside', clickOutside)
 
 if (!process.env.IS_WEB) Vue.use(require('vue-electron'))
 
-Vue.http = Vue.prototype.$http = axios
 Vue.config.productionTip = false
-Vue.use(element)
+
+// 实例化过滤器
+Object.keys(filters).forEach(k => Vue.filter(k, filters[k]))
 
 /* eslint-disable no-new */
-const app = new Vue({
+new Vue({
   el: '#app',
   router,
   store,
   ...App
 })
-
-export default app

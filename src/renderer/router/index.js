@@ -1,120 +1,105 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import store from '../store'
 
 import NProgress from 'nprogress' // 页面顶部进度条
-import 'nprogress/nprogress.css'
 
-import { loginIn } from '../utils/loginIn'
+const home = () => import(/* webpackChunkName: "home" */ '../pages/index')
 
-const login = () => import(/* webpackChunkName: "login" */ '@/pages/login.vue')
+const code = () => import(/* webpackChunkName: "code" */ '../pages/code')
 
-const index = () => import(/* webpackChunkName: "index" */ '@/pages/index.vue')
+const think = () => import(/* webpackChunkName: "think" */ '../pages/think')
 
-const home = () => import(/* webpackChunkName: "home" */ '@/pages/home/index.vue')
+const tag = () => import(/* webpackChunkName: "tag" */ '../pages/tag/_tag')
 
-const article = () => import(/* webpackChunkName: "article" */ '@/pages/article/index')
-const release = () => import(/* webpackChunkName: "article" */ '@/pages/article/release')
+const about = () => import(/* webpackChunkName: "about" */ '../pages/about')
 
-const tag = () => import(/* webpackChunkName: "tag" */ '@/pages/tags/index')
+const wall = () => import(/* webpackChunkName: "wall" */ '../pages/wall')
 
-const comments = () => import(/* webpackChunkName: "comments" */ '@/pages/comments/index')
+const sitemap = () => import(/* webpackChunkName: "sitemap" */ '../pages/sitemap')
 
-const heros = () => import(/* webpackChunkName: "heros" */ '@/pages/heros/index')
+const download = () => import(/* webpackChunkName: "download" */ '../pages/download')
 
-const set = () => import(/* webpackChunkName: "set" */ '@/pages/set/index')
+const search = () => import(/* webpackChunkName: "search" */ '../pages/search/_keyword')
+
+const date = () => import(/* webpackChunkName: "date" */ '../pages/date/_date')
+
+const article = () => import(/* webpackChunkName: "article" */ '../pages/article/_id')
 
 Vue.use(Router)
 
 const routes = [
   {
     path: '/',
-    name: '我的面板',
-    component: index,
-    leaf: true,
-    icon: 'icon-home',
-    redirect: '/home',
-    children: [
-      { path: '/home', component: home, name: '我的面板', meta: { page: 'home', requiresAuth: true } }
-    ]
+    component: home,
+    name: 'index'
   },
   {
-    path: '/',
-    name: '文章管理',
-    component: index,
-    icon: 'icon-article',
-    children: [
-      { path: '/article/index', component: article, name: '文章列表', icon: 'icon-list', meta: { page: 'article', requiresAuth: true } },
-      { path: '/article/release', component: release, name: '发布文章', icon: 'icon-write', meta: { page: 'article', requiresAuth: true } }
-    ]
+    path: '/code',
+    component: code,
+    name: 'code'
   },
   {
-    path: '/',
-    name: '文章标签',
-    component: index,
-    leaf: true,
-    icon: 'icon-tag',
-    children: [
-      { path: '/tag', component: tag, name: '文章标签', icon: 'icon-tag', meta: { page: 'tag', requiresAuth: true } }
-    ]
+    path: '/think',
+    component: think,
+    name: 'think'
   },
   {
-    path: '/',
-    name: '评论',
-    component: index,
-    leaf: true,
-    icon: 'icon-comments',
-    children: [
-      { path: '/comment', component: comments, name: '评论', icon: 'icon-comments', meta: { page: 'comments', requiresAuth: true } }
-    ]
+    path: '/about',
+    component: about,
+    name: 'about'
   },
   {
-    path: '/',
-    name: '留言墙',
-    component: index,
-    leaf: true,
-    icon: 'icon-hero',
-    children: [
-      { path: '/heros', component: heros, name: '留言墙', meta: { page: 'heros', requiresAuth: true } }
-    ]
+    path: '/wall',
+    component: wall,
+    name: 'wall'
   },
   {
-    path: '/',
-    name: '全局设置',
-    component: index,
-    leaf: true,
-    icon: 'icon-set',
-    children: [
-      { path: '/set', component: set, name: '全局设置', meta: { page: 'set', requiresAuth: true } }
-    ]
+    path: '/download',
+    component: download,
+    name: 'download'
   },
   {
-    path: '/login',
-    name: '登陆',
-    component: login,
-    meta: { requiresAuth: false }
+    path: '/sitemap',
+    component: sitemap,
+    name: 'sitemap'
+  },
+  {
+    path: '/tag/:tag',
+    component: tag,
+    name: 'tag'
+  },
+  {
+    path: '/search/:keyword',
+    component: search,
+    name: 'search'
+  },
+  {
+    path: '/date/:date',
+    component: date,
+    name: 'date'
+  },
+  {
+    path: '/article/:id',
+    component: article,
+    name: 'article'
   }
 ]
 
 const router = new Router({
-  // mode: 'history',
-  // base: __dirname,
+  linkExactActiveClass: 'link-active',
   routes
 })
 
+const isSide = ['index', 'code', 'think', 'date', 'tag', 'search', 'sitemap']
+
 router.beforeEach((to, from, next) => {
   NProgress.start()
-  if (to.matched.some(record => record.meta.requiresAuth)) {
-    if (!loginIn()) {
-      next({
-        path: '/login',
-        query: { redirect: to.fullPath }
-      })
-    } else {
-      next()
-    }
-  } else {
-    next() // 确保一定要调用 next()
+  const isAsidePage = isSide.includes(to.name)
+  if (!Object.is(store.state.options.isAsidePage, isAsidePage)) {
+    store.commit('options/CHANGE_ASIDE_PAGE', isAsidePage)
   }
+  next()
 })
 
 router.afterEach(transition => {

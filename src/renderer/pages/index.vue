@@ -1,258 +1,102 @@
 <template>
-  <div class="index">
-    <header>
-      <div class="logo font-futura ">
-        <router-link to="/">
-          <img src="../assets/images/logo.png" alt="" width="46">
-          <span>三毛</span>
-        </router-link>
-      </div>
-      <div class="user">
-        <!-- <span class="user-face-box">
-          <img :src="(user.gravatar || 'https://static.jkchao.cn') + '?imageView2/1/w/36/h/36'" class="user-face">
-        </span> -->
-    <el-dropdown trigger="hover" @command="handleCommand">
-      <span class="el-dropdown-link user-face-box">
-        <img :src="(user.gravatar || 'https://static.jkchao.cn') + '?imageView2/1/w/36/h/36'" class="user-face">
-        <i class="el-icon-caret-bottom el-icon--right"></i>
-      </span>
-      <el-dropdown-menu slot="dropdown">
-        <el-dropdown-item command="back">
-          <a href="https://jkchao.cn">返回首页</a>
-        </el-dropdown-item>
-        <el-dropdown-item command="logout">
-          <a href="javascript:;">退出</a>
-        </el-dropdown-item>
-      </el-dropdown-menu>
-    </el-dropdown>
-      </div>
-    </header>
-    <section>
-      <aside class="nav">
-          <div class="toggle-size"></div>
-          <el-menu
-            :default-active="defaultPath"
-            class="el-menu-vertical-demo"
-            theme="dark"
-            unique-opened
-            :default-openeds="defaultOpen"
-            router>
-            <template v-for="(item,index) in $router.options.routes">
-              <el-submenu :index="index+''" v-if="!item.leaf && item.children" :key="index">
-                <template slot="title">
-                  <i :class="item.icon"  class="iconfont mar" ></i>
-                  <span class="title">{{item.name}}</span>
-                </template>
-                <el-menu-item v-for="child in item.children" :index="child.path" :key="child.path" v-if="!child.leaf">
-                  <i :class="child.icon"  class="iconfont mar" ></i>
-                  <span class="text">
-                    {{child.name}}
-                  </span>
-                </el-menu-item>
-              </el-submenu>
-              <el-menu-item v-if="item.leaf && item.children" :index="item.children[0].path" :key="index">
-                <i :class="item.icon"  class="iconfont mar" ></i>
-                <span>{{item.name}}</span>
-              </el-menu-item>
-            </template>
-            <el-menu-item index="">
-              <a href="https://analytics.google.com" target="_blank">
-                <i class="iconfont mar icon-count"></i>
-                <span>Google Analytics</span>           
-              </a>
-            </el-menu-item>
-          </el-menu>
-      </aside>
-
-      <article>
-        <transition-group tag="span" name="list">
-          <el-col :span="24" key="1" v-if="$route.path !== '/home'" class="breadcrumb">
-            <el-breadcrumb>
-              <transition-group tag="div" name="list" class="el-breadcrumb">
-                <el-breadcrumb-item :to="{ path: '/home' }" :key="indexPath">{{ indexPath }}</el-breadcrumb-item>
-                <el-breadcrumb-item v-if="currentPathNameParent !== indexPath " :key="currentPathNameParent">{{ currentPathNameParent }}</el-breadcrumb-item>
-                <el-breadcrumb-item v-if="currentPathName !== currentPathNameParent " :key="currentPathName">{{ currentPathName }}</el-breadcrumb-item>
-              </transition-group>
-            </el-breadcrumb>
-          </el-col>
-          <el-col :span="24" key="2" class="right-content">
-            <transition :name="transition" mode="out-in">
-              <router-view></router-view>
-            </transition>
-          </el-col>
-        </transition-group>
-      </article>
-    </section>
-  </div>
+  <section  class="clearfix main">
+    <carrousel :option="swiperOption" :con="banners"></carrousel>
+    <div class="article">
+      <articleView
+        :articleList = "list"
+        :haveMoreArt="haveMoreArt"
+        @loadMore="loadMore"></articleView>
+    </div>
+  </section>
 </template>
 <script>
 
-import { mapGetters } from 'vuex'
+import carrousel from '@/components/common/carrousel.vue'
+import articleView from '@/components/common/article.vue'
 
 export default {
 
-  name: 'index',
-
   data () {
     return {
-      indexPath: '我的面板',
-      defaultPath: '',
-      defaultOpen: [],
-      currentPathName: '',
-      currentPathNameParent: '',
-      page: ['home', 'article', 'tag', 'comments', 'heros', 'set'],
-      transition: 'fade',
-      collapse: false
+      swiperOption: {
+        autoplay: 3500,
+        setWrapperSize: true,
+        pagination: '.swiper-pagination',
+        paginationClickable: true,
+        mousewheelControl: true,
+        autoplayDisableOnInteraction: false,
+        observeParents: true,
+        grabCursor: true,
+        preloadImages: false,
+        lazyLoading: true
+      }
     }
   },
 
   computed: {
-    ...mapGetters([
-      'user'
-    ])
-  },
 
-  methods: {
-    handleCommand (command) {
-      if (command === 'logout') this.$router.push('/login')
-      else window.location.href = 'https://jkchao.cn'
+    list () {
+      return this.$store.state.article.art.list
+    },
+
+    banners () {
+      return this.list.slice(0, 9)
+    },
+
+    haveMoreArt () {
+      return this.$store.state.article.art.pagination.current_page !==
+      this.$store.state.article.art.pagination.total_page
     }
   },
 
-  watch: {
-    '$route' (to, from) { // 监听路由改变
-      this.defaultPath = to.path
-      this.currentPathName = to.name
-      this.currentPathNameParent = to.matched[0].name
-      const toPageInd = this.page.indexOf(to.meta.page)
-      const fromPageInd = this.page.indexOf(from.meta.page)
-      this.transition = toPageInd === fromPageInd
-        ? 'fade'
-        : toPageInd > fromPageInd
-          ? 'slide-down'
-          : 'slide-up'
+  components: {
+    carrousel,
+    articleView
+  },
+
+  methods: {
+    loadMore () {
+      this.$store.dispatch('article/getArtList', {
+        current_page: this.$store.state.article.art.pagination.current_page + 1
+      })
     }
   },
 
   created () {
-    this.defaultPath = this.$route.path
-    this.currentPathName = this.$route.name
-    this.currentPathNameParent = this.$route.matched[0].name
-    const index = this.page.indexOf(this.$route.meta.page)
-    this.defaultOpen.push(index.toString())
+    this.$store.dispatch('article/getArtList')
   }
 }
 </script>
 
+
 <style lang="scss">
 
-@import '../assets/scss/variable.scss';
+.main {
+  .carrousel {
+    width: 48.5rem;
+    height: 20rem;
+    margin: 0 auto 1rem auto;
 
-.index {
-  height: 100%;
-}
+    .swiper-slide {
+      text-align: center;
+      position: relative;
 
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: $header-height;
-  width: 100%;
-  padding: 0 20px;
-  line-height: $header-height;
-  background: darken($admin-bg, 0%);
+      >.swiper-title {
+        position: absolute;
+        right: $normal-pad;
+        top: $normal-pad;
+        padding: $normal-pad / 2;
+        // background: lighten($module-hover-bg, 60%);
+        color: $black;
+        z-index: 999;
+        cursor: pointer;
 
-  >.logo {
-    font-size: $font-size-logo;
-    color: white;
-    justify-content: center;
-  }
-
-  >.user {
-    color: white;
-
-    .el-dropdown {
-      color: white;
-
-      .el-icon-caret-bottom {
-        margin-left: 12px;
+        &:hover {
+          background: $module-hover-bg;
+        }
       }
-    }
-
-    .el-button {
-      i {
-        color: $white;
-        font-size: 1.5rem;
-      }
-    }
-
-    >.item {
-      display: inline;
-      padding: $xs-pad $sm-pad;
-      margin: 0 $sm-pad;
-    }
-  }
-
-  .user-face-box {
-    margin-left: $lg-pad;
-
-    .user-face {
-      border-radius: 50%;
-      height: 36px;
     }
   }
 }
 
-section {
-  position: absolute;
-  top: 4rem;
-  bottom: 0;
-  width: 100%;
-  overflow: hidden;
-
-  >aside {
-    position: fixed;
-    top: 4rem;
-    left: 0;
-    bottom: 0;
-    overflow-x: hidden;
-    overflow-y: auto;
-    width: 200px;
-    background: $black;
-    z-index: 8;
-
-    .el-menu {
-      background: $black;
-
-      .el-submenu .el-menu {
-        background: $black;
-      }
-
-      .el-menu-item.is-active {
-        color: $white;
-        background: $darkBlack;
-      }
-    }
-  }
-
-  >article {
-    position: absolute;
-    right: 0px;
-    top: 0px;
-    bottom: 0px;
-    left: 200px;
-    padding: $lg-pad;
-    min-width: 1000px;
-    overflow-y: auto;
-
-    .breadcrumb {
-      margin-bottom: 1rem;
-    }
-
-    .right-content {
-      height: calc(100% - 2rem);
-      min-width: 1100px;
-    }
-  }
-}
 </style>

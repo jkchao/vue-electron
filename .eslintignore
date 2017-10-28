@@ -1,4 +1,7 @@
 test/unit/coverage/**
 test/unit/*.js
 test/e2e/*.js
-src/renderer/pages/login.vue
+src/renderer/utils/*.js
+src/renderer/components/layouts/background.vue
+src/renderer/components/common/comments.vue
+src/renderer/pages/wall.vue
