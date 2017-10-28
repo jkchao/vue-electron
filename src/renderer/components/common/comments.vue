@@ -127,7 +127,7 @@
         <div class="user">
           <div class="gravatar" v-if="!mobileLayout">
             <img :alt="user.name || '匿名用户'"
-                 :src="user.gravatar || '../../assets/images/user.png'">
+                 :src="user.gravatar || 'https://static.jkchao.cn/gravatar.jpg'">
           </div>
         </div>
         <div class="editor">
@@ -302,6 +302,13 @@
         required: true
       }
     },
+
+    watch: {
+      postId (val) {
+        console.log(val)
+      }
+    },
+
     computed: {
 
       comment () {
@@ -315,15 +322,6 @@
       mobileLayout () {
         return this.$store.state.options.mobileLayout
       }
-    },
-    mounted () {
-      this.initUser()
-      if (!this.comment.data.pagination.total_page) {
-        this.loadComemntList()
-      }
-    },
-    destroyed () {
-      this.$store.commit('comment/CLEAR_LIST')
     },
     methods: {
       // markdown解析服务
@@ -515,6 +513,7 @@
       commentLiked (comment_id) {
         return this.likeComments.includes(comment_id)
       },
+
       // 获取评论列表
       async loadComemntList (params = {}) {
         params.sort = this.sortMode
@@ -560,6 +559,17 @@
           localStorage.setItem('BLOG_USER', JSON.stringify(this.user))
         } else alert('操作失败')
       }
+    },
+
+    created () {
+      this.initUser()
+      if (!this.comment.data.pagination.total_page) {
+        this.loadComemntList()
+      }
+    },
+
+    destroyed () {
+      this.$store.commit('comment/CLEAR_LIST')
     }
   }
 </script>

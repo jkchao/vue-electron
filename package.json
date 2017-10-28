@@ -1,7 +1,7 @@
 {
   "name": "electron",
   "productName": "electron",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "author": "jkchao <jkchaom@gmail.com>",
   "description": "An electron-vue project",
   "license": null,

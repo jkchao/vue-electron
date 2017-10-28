@@ -127,12 +127,16 @@ export default {
   },
 
   created () {
+    this.init()
     this.$store.dispatch('article/getArt', { id: this.$route.params.id })
   },
 
   mounted () {
-    this.init()
     this.initEvent()
+  },
+
+  destroyed () {
+    this.$store.commit('article/CLEAR_ARTICLE')
   }
 }
 </script>

@@ -54,7 +54,10 @@ const mutations = {
 
   LIKE_ARTICLE (state) {
     state.details.meta.likes += 1
-    console.log(state.details)
+  },
+
+  CLEAR_ARTICLE (state) {
+    state.details = {}
   }
 }
 

@@ -86,6 +86,9 @@ const routes = [
 
 const router = new Router({
   linkExactActiveClass: 'link-active',
+  scrollBehavior (to, from, savedPosition) {
+    return { x: 0, y: 0 }
+  },
   routes
 })
 
