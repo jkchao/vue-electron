@@ -13,7 +13,7 @@
 
 ### 相关截图
 
-![](http://ovshyp9zv.bkt.clouddn.com/vue-electron.png)
+![](http://ovshyp9zv.bkt.clouddn.com/electron.png)
 
 
 #### Build Setup
