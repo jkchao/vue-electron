@@ -13,7 +13,7 @@
 
 ### 相关截图
 
-![](http://ovshyp9zv.bkt.clouddn.com/electron.png)
+![](https://static.jkchao.cn/electron.png)
 
 
 #### Build Setup
