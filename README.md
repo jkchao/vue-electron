@@ -13,7 +13,7 @@
 
 ### 相关截图
 
-![](https://static.jkchao.cn/electron.png)
+![](https://raw.githubusercontent.com/jkchao/vue-electron/master/images/electron.png)
 
 
 #### Build Setup
