@@ -2,7 +2,7 @@
 
 > An electron-vue project
 
-[vue-blog](https://admin.jkchao.cn) client，base on vue-electron，axios, vuex, vue-router.
+[vue-blog](https://jkchao.cn) client，base on vue-electron，axios, vuex, vue-router.
 
 ## 下载
 
@@ -13,7 +13,7 @@
 
 ### 相关截图
 
-![](http://ovshyp9zv.bkt.clouddn.com/electron.png)
+![](https://static.jkchao.cn/electron.png)
 
 
 #### Build Setup
@@ -36,5 +36,3 @@ npm test
 npm run lint
 
 ```
-
----
